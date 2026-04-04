@@ -91,7 +91,7 @@ const requiredFiles = [
   "src/app/(auth)/register/page.tsx",
   "src/app/(feed)/feed/page.tsx",
   "src/app/api/health/route.ts",
-  "src/proxy.ts",
+  "src/middleware.ts",
   "src/styles/globals.css",
   "src/lib/constants.ts",
   "src/lib/apiClient.ts",
@@ -168,12 +168,12 @@ test("next.config.mjs has security headers", () => {
 console.log("\n🔐  Middleware");
 
 test("Middleware protects /feed route", () => {
-  const content = readText("src/proxy.ts");
+  const content = readText("src/middleware.ts");
   assert.ok(content.includes("ROUTES.FEED") || content.includes("/feed"));
 });
 
 test("Middleware redirects to login with ?next= param", () => {
-  const content = readText("src/proxy.ts");
+  const content = readText("src/middleware.ts");
   assert.ok(content.includes("next"));
 });
 

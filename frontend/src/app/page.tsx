@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { auth } from "@/auth";
+import { ROUTES } from "@/lib/constants";
 
-export const metadata: Metadata = {
-  title: "Welcome",
-};
+export const metadata: Metadata = { title: "Welcome" };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
+
   return (
     <main className="d-flex align-items-center justify-content-center min-vh-100">
       <div
@@ -16,10 +19,9 @@ export default function HomePage() {
           width: "100%",
           borderRadius: "var(--border-radius-base)",
           padding: "2.5rem 2rem",
-          background: "var(--color-white)",
+          background: "var(--color-card-bg)",
         }}
       >
-        {/* Logo from project assets */}
         <div className="mb-4">
           <Image
             src="/assets/images/logo.svg"
@@ -30,50 +32,37 @@ export default function HomePage() {
           />
         </div>
 
-        <h1
-          className="h4 mb-2 fw-bold"
-          style={{ color: "var(--color-primary)" }}
-        >
+        <h1 className="h4 mb-2 fw-bold" style={{ color: "var(--color-primary)" }}>
           Appifylab Social
         </h1>
 
         <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
-          Next.js 15 · React 19 · Bootstrap · TypeScript
-          <br />
-          Frontend initialized ✓
+          Next.js 16 · React 19 · Auth.js v5 · Bootstrap
         </p>
 
-        {/* Status badges */}
         <div className="d-flex justify-content-center gap-2 flex-wrap mb-4">
-          <span className="badge bg-success">Bootstrap CSS ✓</span>
-          <span className="badge bg-primary">App Router ✓</span>
-          <span className="badge bg-secondary">TypeScript ✓</span>
-          <span className="badge bg-info text-dark">Env Config ✓</span>
+          <span className="badge bg-success">Auth.js v5 ✓</span>
+          <span className="badge bg-primary">JWT + Refresh ✓</span>
+          <span className="badge bg-secondary">proxy.ts ✓</span>
+          <span className="badge bg-info text-dark">Bootstrap ✓</span>
         </div>
 
-        {/* Navigation to future pages */}
         <div className="d-grid gap-2">
-          <Link
-            href="/login"
-            className="btn btn-primary"
-            style={{ borderRadius: "var(--border-radius-pill)" }}
-          >
-            Go to Login
-          </Link>
-          <Link
-            href="/register"
-            className="btn btn-outline-primary"
-            style={{ borderRadius: "var(--border-radius-pill)" }}
-          >
-            Go to Register
-          </Link>
+          {isLoggedIn ? (
+            <Link href={ROUTES.FEED} className="btn btn-primary _btn1">
+              Go to Feed →
+            </Link>
+          ) : (
+            <>
+              <Link href={ROUTES.LOGIN} className="btn btn-primary _btn1">
+                Login
+              </Link>
+              <Link href={ROUTES.REGISTER} className="btn btn-outline-primary">
+                Create Account
+              </Link>
+            </>
+          )}
         </div>
-
-        <hr className="my-4" />
-        <p className="text-muted mb-0" style={{ fontSize: "0.8rem" }}>
-          Backend:{" "}
-          <code>{process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3001"}</code>
-        </p>
       </div>
     </main>
   );

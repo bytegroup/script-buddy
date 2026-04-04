@@ -1,22 +1,24 @@
+/**
+ * Login page — Server Component
+ *
+ * Server-side redirect: if already authenticated, send to /feed.
+ * Otherwise render the client LoginForm.
+ */
 import type { Metadata } from "next";
-import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import LoginForm from "@/components/auth/LoginForm";
 import { ROUTES } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "Login" };
 
-export default function LoginPage() {
-  return (
-    <div
-      className="card shadow-sm p-4 text-center"
-      style={{ maxWidth: 420, width: "100%" }}
-    >
-      <h2 className="h5 fw-bold mb-1">Sign In</h2>
-      <p className="text-muted small mb-3">
-        Login UI coming in the next step.
-      </p>
-      <Link href={ROUTES.HOME} className="btn btn-outline-secondary btn-sm">
-        ← Back to Home
-      </Link>
-    </div>
-  );
+export default async function LoginPage() {
+  const session = await auth();
+
+  // Already logged in → go to feed
+  if (session?.user) {
+    redirect(ROUTES.FEED);
+  }
+
+  return <LoginForm />;
 }

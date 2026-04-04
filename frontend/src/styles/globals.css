@@ -1,25 +1,64 @@
-@import url("./bootstrap.min.css");
-@import url("./common.css");
-@import url("./main.css");
-@import url("./responsive.css");
+/*
+ * globals.css
+ *
+ * Font loading order:
+ * 1. FontAwesome (self-hosted from /public/assets/fonts/)
+ * 2. Poppins via Google Fonts (not bundled in the zip — loaded from CDN)
+ * 3. Bootstrap base styles
+ * 4. Project CSS files (common, main, responsive)
+ *
+ * NOTE: FontAwesome woff2 files ARE present in /public/assets/fonts/
+ *       Poppins is NOT in the zip — loaded via @import from Google Fonts.
+ */
+/* ── Poppins via Google Fonts (not in asset folder) ───────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700;800&display=swap");
 
-/* ─── App-level overrides only below this line ─── */
+/* ── Project asset CSS ─────────────────────────────────────────────────────── */
+@import url("bootstrap.min.css");
+@import url("common.css");
+@import url("main.css");
+@import url("responsive.css");
 
-:root {
-  --color-primary: #1877f2;
-  --color-primary-dark: #1558b0;
-  --color-danger: #e74c3c;
-  --color-success: #27ae60;
-  --color-text: #333333;
-  --color-text-muted: #6c757d;
-  --color-bg: #f0f2f5;
-  --color-white: #ffffff;
-  --border-radius-base: 8px;
-  --border-radius-pill: 50px;
-  --box-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --transition-base: 150ms ease-in-out;
+/* ── FontAwesome (self-hosted) ─────────────────────────────────────────────── */
+@font-face {
+  font-family: "Font Awesome 5 Free";
+  font-style:  normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("./fonts/fa-solid-900.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Font Awesome 5 Free";
+  font-style:  normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/fa-regular-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Font Awesome 5 Brands";
+  font-style:  normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/fa-brands-400.woff2") format("woff2");
+}
+
+/* ── App-level custom properties ──────────────────────────────────────────── */
+:root {
+  --color-primary:     #1890FF;  /* matches --color5 in project CSS */
+  --color-primary-dark:#1558b0;
+  --color-danger:      #e74c3c;
+  --color-success:     #27ae60;
+  --color-text:        #2D3748;  /* matches --color in project CSS */
+  --color-text-muted:  #767676;
+  --color-bg:          #F0F2F5;  /* matches --bg1 */
+  --color-card-bg:     #FFFFFF;  /* matches --bg2 */
+  --border-radius-base:8px;
+  --transition-base:   150ms ease-in-out;
+}
+
+/* ── Base resets that supplement project CSS ───────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -30,23 +69,57 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Oxygen, Ubuntu, sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
 }
 
-a {
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; height: auto; }
+
+/* ── Auth form extras (error messages, eye button) ─────────────────────────── */
+.field-error {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-danger);
+  margin-top: 4px;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-control {
+  padding-right: 44px;
+}
+
+.eye-toggle {
+  position:   absolute;
+  right:      12px;
+  top:        50%;
+  transform:  translateY(-50%);
+  background: none;
+  border:     none;
+  padding:    0;
+  cursor:     pointer;
+  color:      var(--color-text-muted);
+  line-height: 1;
+  font-size:  18px;
+}
+
+.eye-toggle:hover {
   color: var(--color-primary);
-  text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
+/* ── Form feedback state ────────────────────────────────────────────────────── */
+.form-control.is-invalid {
+  border-color: var(--color-danger) !important;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+.auth-alert {
+  font-size: 0.875rem;
+  border-radius: 6px;
 }
