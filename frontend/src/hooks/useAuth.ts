@@ -44,9 +44,9 @@ export function useAuth(): UseAuthReturn {
       user: {
         id: payload.sub,
         email: payload.email,
-        firstName: "",
-        lastName: "",
-        createdAt: "",
+        first_name: "",
+        last_name: "",
+        created_at: "",
       },
       isAuthenticated: true,
       isLoading: false,
