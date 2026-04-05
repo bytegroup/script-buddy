@@ -17,8 +17,8 @@ export default function CommentItem({ comment, currentUserId, onLike, onReply, o
   const [submitting,   setSubmitting]   = useState(false);
   const [showLikers,   setShowLikers]   = useState(false);
   const [likerTarget,  setLikerTarget]  = useState<{ type: "comments" | "replies"; id: string } | null>(null);
-  const [localLiked,   setLocalLiked]   = useState(comment.likedByMe);
-  const [localCount,   setLocalCount]   = useState(comment.likesCount);
+  const [localLiked,   setLocalLiked]   = useState(comment.liked_by_me);
+  const [localCount,   setLocalCount]   = useState(comment.likes_count);
 
   const handleLike = useCallback(() => {
     const next = !localLiked;

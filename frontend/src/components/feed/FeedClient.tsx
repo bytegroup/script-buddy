@@ -44,7 +44,7 @@ export default function FeedClient({ currentUserId, authorName }: Props) {
                     ? {
                         ...p,
                         likedByMe:  liked,
-                        likesCount: p.likesCount + (liked ? 1 : -1),
+                        likesCount: p.likes_count + (liked ? 1 : -1),
                       }
                     : p,
                 )
