@@ -2,7 +2,7 @@
 import useSWR from "swr";
 import type { User } from "@/types";
 
-type Liker = Pick<User, "id" | "firstName" | "lastName" | "avatarUrl">;
+type Liker = Pick<User, "id" | "first_name" | "last_name" | "avatar_url">;
 
 async function fetcher(url: string): Promise<Liker[]> {
   const res = await fetch(url, { credentials: "include" });
