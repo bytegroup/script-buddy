@@ -40,9 +40,9 @@ export default function LikersModal({ type, id, open, onClose }: Props) {
                   className="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white fw-bold"
                   style={{ width: 32, height: 32, fontSize: 13, flexShrink: 0 }}
                 >
-                  {(u.firstName?.[0] ?? "?").toUpperCase()}
+                  {(u.first_name?.[0] ?? "?").toUpperCase()}
                 </div>
-                <span className="small">{u.firstName} {u.lastName}</span>
+                <span className="small">{u.first_name} {u.last_name}</span>
               </div>
             ))}
           </div>

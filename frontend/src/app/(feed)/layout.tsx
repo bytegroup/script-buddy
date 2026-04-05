@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import { ROUTES } from "@/lib/constants";
+import LeftSideBar from "@/components/feed/LeftSideBar";
 
 export default async function FeedLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -23,8 +24,8 @@ export default async function FeedLayout({ children }: { children: React.ReactNo
 
   return (
     <div className="_layout _layout_main_wrapper" style={{ minHeight: "100vh", background: "var(--bg1,#f0f2f5)" }}>
-      <div className="_main_layout" style={{ height: "auto", overflow: "visible" }}>
-        <FeedNavbar firstName={firstName} lastName={lastName} />
+      <div className="_main_layout" style={{height: "auto", overflow: "visible"}}>
+        <FeedNavbar firstName={firstName} lastName={lastName}/>
         <main>
           {children}
         </main>

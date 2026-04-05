@@ -73,6 +73,12 @@ export class PostsController {
     @CurrentUser() user: User,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
-    return this.postsService.getLikers(id, user.id);
+    try {
+      const res = this.postsService.getLikers(id, user.id);
+      return res;
+    }catch (e) {
+      console.log("get likers err: ", e);
+      return "no likes";
+    }
   }
 }

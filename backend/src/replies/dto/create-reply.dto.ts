@@ -1,8 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MinLength, MaxLength } from 'class-validator';
+import {ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
+import {IsString, MinLength, MaxLength, IsOptional} from 'class-validator';
 import { Transform } from 'class-transformer';
+import {UUID} from "node:crypto";
 
 export class CreateReplyDto {
+  @ApiPropertyOptional({ example: '00000001-0000-0000-0000-000000000002' })
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }) => value?.trim() || null)
+  user_id?: string | UUID;
+
   @ApiProperty({ example: 'Thank you!', minLength: 1, maxLength: 2000 })
   @IsString()
   @MinLength(1, { message: 'Reply cannot be empty.' })

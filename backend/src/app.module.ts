@@ -33,7 +33,8 @@ import {LoggerMiddleware} from "@/common/middleware/logger.middleware";
         database: config.get<string>('DB_NAME', 'appifylab_social'),
         entities: [User, Post, Comment, Reply, PostLike, CommentLike, ReplyLike],
         synchronize: config.get<boolean>('DB_SYNC', false), // false in production
-        logging: config.get<string>('NODE_ENV') === 'development',
+        //logging: config.get<string>('NODE_ENV') === 'development',
+        logging: false,
         ssl: {
           rejectUnauthorized: false,
         }

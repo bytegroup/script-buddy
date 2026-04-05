@@ -1,9 +1,3 @@
-/**
- * Login page — Server Component
- *
- * Server-side redirect: if already authenticated, send to /feed.
- * Otherwise render the client LoginForm.
- */
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";

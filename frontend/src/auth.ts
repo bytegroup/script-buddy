@@ -82,8 +82,8 @@ export const authConfig: NextAuthConfig = {
 
           // authorize() must return null on failure — never throw
           if (!res.ok) return null;
-
-          const data = await res.json();
+          const resJson = await res.json();
+          const data = resJson.data;
 
           // Map backend snake_case → our User shape
           return {

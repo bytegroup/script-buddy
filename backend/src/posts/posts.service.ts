@@ -23,9 +23,9 @@ export class PostsService {
 
     return {
       data,
-      total:       data.length,
+      total: data.length,
       hasNextPage,
-      limit:       query.limit,
+      limit: query.limit,
     };
   }
 

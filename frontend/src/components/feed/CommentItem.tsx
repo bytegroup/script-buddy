@@ -45,16 +45,16 @@ export default function CommentItem({ comment, currentUserId, onLike, onReply, o
           className="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0"
           style={{ width: 32, height: 32, fontSize: 12 }}
         >
-          {(comment.author.firstName?.[0] ?? "?").toUpperCase()}
+          {(comment.author.first_name?.[0] ?? "?").toUpperCase()}
         </div>
 
         <div style={{ flex: 1 }}>
           {/* Comment bubble */}
           <div className="px-3 py-2 rounded-3" style={{ background: "var(--bg3, #f5f5f5)" }}>
             <span className="fw-semibold small me-2">
-              {comment.author.firstName} {comment.author.lastName}
+              {comment.author.first_name} {comment.author.last_name}
             </span>
-            <span className="small">{comment.content}</span>
+            <p><span className="small">{comment.content}</span></p>
           </div>
 
           {/* Actions */}
@@ -155,12 +155,12 @@ function ReplyItem({
         className="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0"
         style={{ width: 26, height: 26, fontSize: 11 }}
       >
-        {(reply.author.firstName?.[0] ?? "?").toUpperCase()}
+        {(reply.author.first_name?.[0] ?? "?").toUpperCase()}
       </div>
       <div>
         <div className="px-2 py-1 rounded-3" style={{ background: "var(--bg3, #f5f5f5)" }}>
-          <span className="fw-semibold" style={{ fontSize: 12 }}>{reply.author.firstName} {reply.author.lastName} </span>
-          <span style={{ fontSize: 12 }}>{reply.content}</span>
+          <span className="fw-semibold" style={{ fontSize: 12 }}>{reply.author.first_name} {reply.author.last_name} </span>
+          <p><span style={{ fontSize: 12 }}>{reply.content}</span></p>
         </div>
         <div className="d-flex gap-2 mt-1" style={{ paddingLeft: 4 }}>
           <button

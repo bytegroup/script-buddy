@@ -1,18 +1,3 @@
-/**
- * Feed page — Server Component shell
- *
- * Rendering strategy: SSR for the shell + CSR for the feed content
- *
- * Why split?
- * - SSR shell: Instantly renders the page frame with auth context.
- *              Handles auth guard, 401 redirect, RefreshTokenExpired.
- * - CSR feed (FeedClient): Data is user-specific and real-time.
- *   SWR fetches, caches and revalidates without a full page reload.
- *   Infinite scroll works naturally in the browser.
- *
- * This is the recommended Next.js App Router pattern for authenticated,
- * real-time, infinitely-scrolling feeds at scale.
- */
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";

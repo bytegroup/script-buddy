@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
   const limit  = searchParams.get("limit")  ?? "10";
 
   const { data, error, status } = await serverFetch<PaginatedResponse<Post>>("/api/posts", {
-    params: { cursor, limit, userId: session.user.id },
+    params: { cursor, limit },
   });
 
   if (error) return NextResponse.json({ message: error }, { status });

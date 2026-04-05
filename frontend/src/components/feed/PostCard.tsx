@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useCallback } from "react";
 import Image from "next/image";
 import type { Post } from "@/types";
@@ -23,8 +24,8 @@ function timeAgo(dateStr: string): string {
 }
 
 export default function PostCard({ post, currentUserId, onLike }: Props) {
-  const [liked,        setLiked]        = useState(post.likedByMe);
-  const [likesCount,   setLikesCount]   = useState(post.likesCount);
+  const [liked,        setLiked]        = useState(post.liked_by_me);
+  const [likesCount,   setLikesCount]   = useState(post.likes_count);
   const [showComments, setShowComments] = useState(false);
   const [showLikers,   setShowLikers]   = useState(false);
   const [commentText,  setCommentText]  = useState("");
@@ -97,7 +98,7 @@ export default function PostCard({ post, currentUserId, onLike }: Props) {
   };
 
   const isOwner = post.author.id === currentUserId;
-
+  console.log("post-data: ", post);
   return (
     <div className="_feed_inner_timeline_post_area _b_radious6 _padd_b24 _padd_t24 _mar_b16">
       <div className="_feed_inner_timeline_content _padd_r24 _padd_l24">
@@ -110,14 +111,14 @@ export default function PostCard({ post, currentUserId, onLike }: Props) {
                 className="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0"
                 style={{ width: 44, height: 44, fontSize: 16 }}
               >
-                {(post.author.firstName?.[0] ?? "?").toUpperCase()}
+                {(post.author.first_name?.[0] ?? "?").toUpperCase()}
               </div>
               <div>
                 <h4 className="_feed_inner_timeline_post_box_title mb-0" style={{ fontSize: 15 }}>
-                  {post.author.firstName} {post.author.lastName}
+                  {post.author.first_name} {post.author.last_name}
                 </h4>
                 <p className="_feed_inner_timeline_post_box_para mb-0" style={{ fontSize: 12 }}>
-                  {timeAgo(post.createdAt)} &nbsp;·&nbsp;
+                  {timeAgo(post.created_at)} &nbsp;·&nbsp;
                   <span
                     className="badge"
                     style={{
@@ -142,10 +143,10 @@ export default function PostCard({ post, currentUserId, onLike }: Props) {
         )}
 
         {/* ── Post image ──────────────────────────────────────────────────── */}
-        {post.imageUrl && (
+        {post.image_url && (
           <div className="_feed_inner_timeline_image mb-3 rounded-3 overflow-hidden">
             <Image
-              src={post.imageUrl}
+              src={post.image_url}
               alt="Post image"
               width={640}
               height={360}
@@ -183,7 +184,7 @@ export default function PostCard({ post, currentUserId, onLike }: Props) {
             onClick={() => setShowComments((v) => !v)}
           >
             <span>💬</span>
-            <span>Comment {post.commentsCount > 0 ? `(${post.commentsCount})` : ""}</span>
+            <span>Comment {post.comments_count > 0 ? `(${post.comments_count})` : ""}</span>
           </button>
         </div>
 

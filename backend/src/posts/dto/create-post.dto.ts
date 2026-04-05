@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsOptional, IsEnum, IsUrl, ValidateIf } from 'class-validator';
 import { Transform } from 'class-transformer';
+import {UUID} from "node:crypto";
 
 export enum PostVisibility {
   PUBLIC  = 'public',
@@ -8,6 +9,12 @@ export enum PostVisibility {
 }
 
 export class CreatePostDto {
+  @ApiPropertyOptional({ example: '00000001-0000-0000-0000-000000000002' })
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }) => value?.trim() || null)
+  user_id?: string | UUID;
+
   @ApiPropertyOptional({ example: 'Just shipped a new feature! 🚀' })
   @IsOptional()
   @IsString()
@@ -21,7 +28,7 @@ export class CreatePostDto {
 
   @ApiProperty({ enum: PostVisibility, default: PostVisibility.PUBLIC })
   @IsEnum(PostVisibility)
-  visibility: PostVisibility;
+  visibility: PostVisibility | undefined;
 
   // Cross-field validation handled in service
   // (content OR image_url must be present)
