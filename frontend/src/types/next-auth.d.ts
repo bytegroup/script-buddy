@@ -1,8 +1,5 @@
-/**
- * Extends the built-in NextAuth v5 (Auth.js) types so TypeScript
- * knows about our custom fields on Session and JWT.
- */
-import type { DefaultSession, DefaultJWT } from "next-auth";
+import "next-auth";
+import "next-auth/jwt";
 
 declare module "next-auth" {
   interface Session {
@@ -12,10 +9,8 @@ declare module "next-auth" {
       lastName: string;
       email: string;
       avatarUrl?: string;
-    } & DefaultSession["user"];
-    /** The raw access token forwarded to the client for API calls */
+    };
     accessToken: string;
-    /** UTC epoch (ms) when the access token expires */
     accessTokenExpiresAt: number;
     error?: "RefreshTokenExpired" | "RefreshTokenError";
   }
@@ -26,7 +21,6 @@ declare module "next-auth" {
     lastName: string;
     email: string;
     avatarUrl?: string;
-    /** Issued by our backend on login */
     accessToken: string;
     refreshToken: string;
     accessTokenExpiresAt: number;
@@ -35,7 +29,7 @@ declare module "next-auth" {
 }
 
 declare module "next-auth/jwt" {
-  interface JWT extends DefaultJWT {
+  interface JWT {
     id: string;
     firstName: string;
     lastName: string;

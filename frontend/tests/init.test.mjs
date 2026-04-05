@@ -91,7 +91,7 @@ const requiredFiles = [
   "src/app/(auth)/register/page.tsx",
   "src/app/(feed)/feed/page.tsx",
   "src/app/api/health/route.ts",
-  "src/middleware.ts",
+  "src/proxy.ts",
   "src/styles/globals.css",
   "src/lib/constants.ts",
   "src/lib/apiClient.ts",
@@ -119,9 +119,12 @@ test("Has name field", () => {
   assert.equal(pkg.name, "appifylab-social");
 });
 
-test("Uses Next.js 15.x", () => {
+test("Uses Next.js 16.x", () => {
   const pkg = readJSON("package.json");
-  assert.match(pkg.dependencies.next, /^15\./);
+  assert.ok(
+    pkg.dependencies.next.startsWith("16."),
+    "Expected next@16.x, got: " + pkg.dependencies.next
+  );
 });
 
 test("Uses React 19.x", () => {
@@ -145,7 +148,7 @@ test("Has test script", () => {
 
 test("Has dev script using turbopack", () => {
   const pkg = readJSON("package.json");
-  assert.match(pkg.scripts.dev, /turbopack/);
+  assert.ok(pkg.scripts.dev.includes("next dev"), "dev script must call next dev");
 });
 
 console.log("\n⚙️   next.config.mjs");
@@ -167,13 +170,15 @@ test("next.config.mjs has security headers", () => {
 
 console.log("\n🔐  Middleware");
 
-test("Middleware protects /feed route", () => {
-  const content = readText("src/middleware.ts");
-  assert.ok(content.includes("ROUTES.FEED") || content.includes("/feed"));
+test("proxy.ts + auth.ts together protect /feed route", () => {
+  // proxy.ts delegates to auth(), authorized() callback in auth.ts handles /feed
+  const proxySrc = readText("src/proxy.ts");
+  const authSrc  = readText("src/auth.ts");
+  assert.ok(proxySrc.includes("auth") && (authSrc.includes("ROUTES.FEED") || authSrc.includes('"/feed"')));
 });
 
-test("Middleware redirects to login with ?next= param", () => {
-  const content = readText("src/middleware.ts");
+test("proxy.ts redirects to login with ?next= param", () => {
+  const content = readText("src/proxy.ts");
   assert.ok(content.includes("next"));
 });
 

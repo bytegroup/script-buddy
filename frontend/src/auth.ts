@@ -13,7 +13,7 @@
 
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { API_BASE_URL, API_ENDPOINTS } from "@/lib/constants";
+import {API_BASE_URL, API_ENDPOINTS, PUBLIC_PATHS} from "@/lib/constants";
 
 // ─── Token durations ──────────────────────────────────────────────────────────
 const ACCESS_TOKEN_TTL_MS  = 15 * 60 * 1000;       // 15 minutes
@@ -177,28 +177,12 @@ export const authConfig: NextAuthConfig = {
      * authorized() — called by proxy.ts to gate every request.
      * Return true to allow, false to redirect to signIn page.
      */
-    authorized({ auth, request }) {
-      const { pathname } = request.nextUrl;
-      const isLoggedIn   = !!auth?.user;
+    authorized({auth, request}) {
+      const {pathname} = request.nextUrl;
 
-      const publicPaths = ["/", "/login", "/register"];
-      const authPaths   = ["/login", "/register"];
-      const isPublic    = publicPaths.includes(pathname);
-      const isAuthPath  = authPaths.includes(pathname);
-
-      // Authenticated user trying to access login/register → redirect to feed
-      if (isLoggedIn && isAuthPath) {
-        return Response.redirect(new URL("/feed", request.nextUrl.origin));
-      }
-
-      // Unauthenticated user on protected route → redirect to login
-      if (!isLoggedIn && !isPublic) {
-        const loginUrl = new URL("/login", request.nextUrl.origin);
-        loginUrl.searchParams.set("next", pathname);
-        return Response.redirect(loginUrl);
-      }
-
-      return true;
+      if (pathname.startsWith("/api/auth")) return true;
+      if (PUBLIC_PATHS.includes(pathname)) return true;
+      return !!auth?.user;
     },
   },
 };

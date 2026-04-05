@@ -116,7 +116,7 @@ export default function LoginForm() {
         <Image src="/assets/images/dark_shape.svg" alt="" width={200} height={200} className="_dark_shape" />
       </div>
       <div className="_shape_two">
-        <Image src="/assets/images/shape2.svg" alt="" width={200} height={200} className="_shape_img" />
+        <Image src="/assets/images/shape2.svg" alt="" width={200} height={200} className="_shape_img"  loading="eager"/>
         <Image src="/assets/images/dark_shape2.svg" alt="" width={200} height={200} className="_dark_shape _dark_shape_opacity" />
       </div>
       <div className="_shape_three">

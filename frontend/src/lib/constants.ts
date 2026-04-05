@@ -1,3 +1,7 @@
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+export const AUTH_COOKIE_NAME = "__Secure-authjs.session-token";
+export const AUTH_COOKIE_MAX_AGE = 604800;
+
 // ─── API ─────────────────────────────────────────────────────────────────────
 
 export const API_BASE_URL =
@@ -37,6 +41,8 @@ export const ROUTES = {
   REGISTER: "/register",
   FEED:     "/feed",
 } as const;
+
+export const PUBLIC_PATHS = ["/login", "/register"];
 
 // ─── Feed ─────────────────────────────────────────────────────────────────────
 

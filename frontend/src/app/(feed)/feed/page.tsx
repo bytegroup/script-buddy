@@ -1,75 +1,50 @@
 /**
- * Feed page — Server Component (protected route)
+ * Feed page — Server Component shell
  *
- * auth() returns null if not authenticated — proxy.ts handles the
- * redirect before the page even renders, but we add a server-side
- * guard here as a belt-and-suspenders safety measure.
+ * Rendering strategy: SSR for the shell + CSR for the feed content
  *
- * Also detects a RefreshTokenExpired error and forces sign-out.
+ * Why split?
+ * - SSR shell: Instantly renders the page frame with auth context.
+ *              Handles auth guard, 401 redirect, RefreshTokenExpired.
+ * - CSR feed (FeedClient): Data is user-specific and real-time.
+ *   SWR fetches, caches and revalidates without a full page reload.
+ *   Infinite scroll works naturally in the browser.
+ *
+ * This is the recommended Next.js App Router pattern for authenticated,
+ * real-time, infinitely-scrolling feeds at scale.
  */
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
-import Link from "next/link";
+import FeedClient from "@/components/feed/FeedClient";
 import { ROUTES } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "Feed" };
 
+// No static caching — every request gets fresh session data
+export const dynamic = "force-dynamic";
+
 export default async function FeedPage() {
   const session = await auth();
 
-  if (!session?.user) {
-    redirect(ROUTES.LOGIN);
-  }
+  // Guard: no session → login
+  if (!session?.user) redirect(ROUTES.LOGIN);
 
-  // Refresh token expired — force sign-out and redirect to login
+  // Guard: refresh token expired → force sign-out then login
   if (session.error === "RefreshTokenExpired") {
     await signOut({ redirect: false });
     redirect(ROUTES.LOGIN);
   }
 
-  const { firstName, lastName, email } = session.user;
+  const { id, firstName, lastName } = session.user;
+  const authorName = `${firstName} ${lastName}`.trim();
 
   return (
-    <main className="container py-5">
-      <div className="card shadow-sm p-4">
-        <h1 className="h4 fw-bold mb-1">
-          Welcome, {firstName} {lastName}!
-        </h1>
-        <p className="text-muted small mb-3">{email}</p>
-        <p className="text-muted mb-4">
-          Feed UI is coming in the next step. You are authenticated ✓
-        </p>
-
-        {/* Token debug info — dev only */}
-        {process.env.NODE_ENV === "development" && (
-          <div
-            className="p-3 mb-4 rounded"
-            style={{ background: "#f8f9fa", fontSize: "0.78rem", fontFamily: "monospace" }}
-          >
-            <strong>Session debug (dev only)</strong>
-            <br />
-            Access token expires:{" "}
-            {new Date(session.accessTokenExpiresAt).toLocaleTimeString()}
-          </div>
-        )}
-
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: ROUTES.LOGIN });
-          }}
-        >
-          <button type="submit" className="btn btn-outline-danger btn-sm">
-            Sign out
-          </button>
-        </form>
-
-        <hr className="my-4" />
-        <Link href={ROUTES.HOME} className="btn btn-outline-secondary btn-sm">
-          ← Back to Home
-        </Link>
-      </div>
-    </main>
+    <div className="container py-4" style={{ maxWidth: 680 }}>
+      <FeedClient
+        currentUserId={id}
+        authorName={authorName}
+      />
+    </div>
   );
 }
