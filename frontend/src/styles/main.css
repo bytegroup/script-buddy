@@ -74,8 +74,6 @@
 }
 ._layout_inner_wrap {
     position: relative;
-    padding-top: 70px !important;
-    padding: 10px 0 0;
     overflow: hidden;
 }
 ._layout_left_sidebar_wrap {

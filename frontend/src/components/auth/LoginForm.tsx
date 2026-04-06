@@ -245,7 +245,7 @@ export default function LoginForm() {
                           disabled={loading}
                           style={{ opacity: loading ? 0.7 : 1 }}
                         >
-                          {loading ? "Logging in…" : "Login now"}
+                          {loading ? "Logging ..." : "Login now"}
                         </button>
                       </div>
                     </div>

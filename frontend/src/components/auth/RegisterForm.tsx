@@ -312,7 +312,7 @@ export default function RegisterForm() {
                           disabled={loading}
                           style={{ opacity: loading ? 0.7 : 1 }}
                         >
-                          {loading ? "Creating account…" : "Register Now"}
+                          {loading ? "Creating…" : "Register"}
                         </button>
                       </div>
                     </div>
